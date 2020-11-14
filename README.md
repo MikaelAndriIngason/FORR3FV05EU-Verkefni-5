@@ -16,6 +16,9 @@ Mögulega mun ég bæta við skrefamæli og texta sem sýnir lengdina á milli.
 
 ***
 
-### Skýringarmynd
+### Skýringarmyndir
+*Þetta sýnir ekki 100% virkni appsins, fer allt bara eftir snúning notandans og kortsins.*
+<p>
 <img src="https://github.com/MikaelAndriIngason/FORR3FV05EU-Verkefni-5/blob/main/skyringarmynd.png" alt="Skýringarmynd" width="250" height="444">
-
+<img src="https://github.com/MikaelAndriIngason/FORR3FV05EU-Verkefni-5/blob/main/skyringarmynd2.png" alt="Skýringarmynd2" width="250" height="444">
+</p>
