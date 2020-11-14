@@ -1,5 +1,7 @@
 # FORR3FV05EU - Verkefni 5
 
+Mikael Andri Ingason - Tækniskólinn - 2020
+
 ### Verkefnalýsing
 Ég er að búa til app sem bendir á staðsetningu miðað við staðsetningu/snúning þinn.  
 Notandinn slær inn staðsetningu og örin snýr í átt að henni (eins og einhverskonar áttaviti)
