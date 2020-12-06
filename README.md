@@ -37,6 +37,10 @@ Mögulega mun ég bæta við skrefamæli og texta sem sýnir lengdina á milli.
 Verkefnið gekk ekki eins vel og ég vildi, átti samt von á því að það myndi enda þannig. Það er ekki nógu gott documentation um áttavita með Javascript, mest af því tengist bara hvernig síminn snýr og það gefur ekki réttar áttir. Það er til library sem kallast Compass.js, en það virkaði ekki heldur.  
 Fann síðan út að símar nota magnetometer sensor til að finna út áttir, en það var líka lítið documentation með það.
 
+Vegna þessa leiðinda þurfti ég að breyta því í í frekar venjulegt kort, það skynjar staðsetninguna þína og uppfærir fjarlægðina og punktinn þinn á kortinu.  
+Ég hefði viljað hafa svg sem sýndi litlan spýtukall sem labbar þegar maður er á hreyfingu og stendur ef maður er kyrr.
+
+Mistökin mín voru að reyna láta áttavitann virka, ég var bara svo þrjóskur að ég reyndi ekkert annað en það... þangað til að skilin byrjuðu að skríða inn, þá þurfti ég að reyna eitthvað annað.
 
 ***
 
