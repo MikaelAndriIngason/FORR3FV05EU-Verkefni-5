@@ -9,8 +9,10 @@ var polyline;
 var distancetext = document.getElementById("distext");
 
 
-//-----------------------------------------
 
+//-----------------------------------------
+// Kortið
+//-----------------------------------------
 
 //Default punktur er blár svo ég bý til grænan til að sýna hvar lokapunkturinn er
 var greenIcon = new L.Icon({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]});
@@ -27,9 +29,18 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     zoomOffset: -1
 }).addTo(map);
 
+
+
+//-----------------------------------------
+// Search bar
+//-----------------------------------------
+
 //Bætir við search bar svo notandinn getur sláð inn staðsetningu
 var searchControl = new L.esri.Controls.Geosearch().addTo(map);
 var results = new L.LayerGroup().addTo(map);
+
+//Bætir við placeholder í search bar-inn
+document.getElementsByClassName('geocoder-control-input leaflet-bar')[0].placeholder = "Leita af staðsetningu";
 
 //Setur punkt fyrir lokapunktinn og býr til línu á milli
 searchControl.on('results', function(data){
@@ -45,6 +56,12 @@ searchControl.on('results', function(data){
         CreateLine();
     }
 });
+
+
+
+//-----------------------------------------
+// Staðsetningar
+//-----------------------------------------
 
 //Ef notandinn finnst þá er settur blár punktur
 function UserLocation(e) {
@@ -64,7 +81,6 @@ function GetLatAndLng(position){
 
     return latAndLng;
 }
-
 //Error ef notandinn finnst ekki
 function UserNotFound(e) { alert(e.message); }
 
@@ -82,12 +98,14 @@ map.locate({
     }).on("locationfound", e => {
         if (!userPoint) {
             userPoint = new L.marker(e.latlng).addTo(this.map);
-        } else {
+        } 
+        else {
             userPoint.setLatLng(e.latlng);
-            distanceBetween();
+            CreateLine();
             //if(!Destination)
                 //distanceBetween();
         }
+    //Ef notandinn finnst ekki
     }).on("locationerror", error => {
         if (userPoint) {
             map.removeLayer(userPoint);
@@ -96,8 +114,10 @@ map.locate({
 });
 
 
-document.getElementsByClassName('geocoder-control-input leaflet-bar')[0].placeholder = "Leita af staðsetningu";
 
+//-----------------------------------------
+// Annað
+//-----------------------------------------
 
 //Býr til línu á milli notandans og lokapunkts
 function CreateLine(){
