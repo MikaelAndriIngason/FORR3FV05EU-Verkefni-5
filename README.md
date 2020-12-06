@@ -25,13 +25,20 @@ Mögulega mun ég bæta við skrefamæli og texta sem sýnir lengdina á milli.
 
 ***
 
-###
+### Myndband af notkun
 
 ***
 
-###
+### Greinagerð um frumgerð
 
 ***
 
-### Github pages
+### Útkoman
+
+***
+
+### Github pages og innihald
+Allur kóðinn og innihald er fyrir ofan (í main).
+
+Hér er github pages  
 https://mikaelandriingason.github.io/FORR3FV05EU-Verkefni-5/
