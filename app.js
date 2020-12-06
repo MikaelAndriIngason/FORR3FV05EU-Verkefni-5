@@ -85,7 +85,23 @@ function UserNotFound(e) { alert(e.message); }
 map.on('locationfound', UserLocation);
 map.on('locationerror', UserNotFound);
 
-map.locate({setView: true, watch: true});
+//map.locate({setView: true, watch: true});
+
+map.locate({
+    setView: true,
+    maxZoom: 1200
+  }).on("locationfound", e => {
+      if (!userPoint) {
+            userPoint = new L.marker(e.latlng).addTo(this.map);
+      } else {
+            userPoint.setLatLng(e.latlng);
+      }
+  }).on("locationerror", error => {
+      if (userPoint) {
+          map.removeLayer(userPoint);
+          userPoint = undefined;
+      }
+  });
 
 
 document.getElementsByClassName('geocoder-control-input leaflet-bar')[0].placeholder = "Leita af staðsetningu";
