@@ -15,7 +15,7 @@ var distancetext = document.getElementById("distext");
 var greenIcon = new L.Icon({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]});
 
 var map = L.map('mapid', { zoomControl: false, attributionControl: false }).fitWorld();
-map.locate({setView: true, maxZoom: 16});
+//map.locate({setView: true, maxZoom: 16});
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' + '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',    
@@ -52,33 +52,6 @@ function GetLatAndLng(position){
     return latAndLng;
 }
 
-/*function RotateArrow(){
-    //let rot = Math.atan2(Math.cos(lat1) * Math.sin(lat2)-Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2-lon1), Math.sin(lon2-lon1) * Math.cos(lat2))
-    //var y = Math.sin(dLon) * Math.cos(lat2);
-    //var x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
-    //var brng = Math.atan2(y, x).toDeg();
-
-    //var bearings = ["NE", "E", "SE", "S", "SW", "W", "NW", "N"];
-
-    //var index = brng - 22.5;
-    //if (index < 0)
-    //    index += 360;
-    //index = parseInt(index / 45);
-    
-    //return(bearings[index]);
-    let usercoord = GetLatAndLng(userPoint);
-
-    let destcoord = GetLatAndLng(Destination);
-
-
-    //console.log(userx, usery, "---", destx, desty);
-
-    console.log(usercoord, destcoord)
-    
-    var angleDeg = Math.atan2(destcoord[1] - usercoord[1], destcoord[0] - usercoord[0]) * 180 / Math.PI;
-    console.log(angleDeg)
-}*/
-
 //Error ef notandinn finnst ekki
 function UserNotFound(e) { alert(e.message); }
 
@@ -114,30 +87,28 @@ function CreateLine(){
     map.fitBounds(L.latLngBounds([userPoint, Destination].map(marker => marker.getLatLng())))
     //RotateArrow();
     showdist = true;
-    distancebetween();
+    distanceBetween();
 }
 
-function distancebetween(){
-    if(showdist){
-        let usercoord = GetLatAndLng(userPoint);
+//Finnur lengdina á milli staðsetningana
+function distanceBetween(){
+    let usercoord = GetLatAndLng(userPoint);
 
-        let destcoord = GetLatAndLng(Destination);
+    let destcoord = GetLatAndLng(Destination);
 
-        let R = 6371e3; // metres
-        let φ1 = usercoord[0] * Math.PI/180; // φ, λ in radians
-        let φ2 = destcoord[0] * Math.PI/180;
-        let Δφ = (destcoord[0]-usercoord[0]) * Math.PI/180;
-        let Δλ = (destcoord[1]-usercoord[1]) * Math.PI/180;
+    let R = 6371e3; // metres
+    let φ1 = usercoord[0] * Math.PI/180; // φ, λ in radians
+    let φ2 = destcoord[0] * Math.PI/180;
+    let Δφ = (destcoord[0]-usercoord[0]) * Math.PI/180;
+    let Δλ = (destcoord[1]-usercoord[1]) * Math.PI/180;
 
-        let a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                Math.cos(φ1) * Math.cos(φ2) *
-                Math.sin(Δλ/2) * Math.sin(Δλ/2);
-        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    let a = Math.sin(Δφ/2) * Math.sin(Δφ/2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-        let d = R * c; // in metres
+    let d = R * c; //Breytir í metra
 
-        distancetext.innerHTML = Math.round(d).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
+    //Námundar í næsta INT og setur kommu ef það fer yfir 1000, síðan er þetta sent á HTML-ið
+    distancetext.innerHTML = Math.round(d).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 //
@@ -161,6 +132,33 @@ function distancebetween(){
 setInterval(updateUserPos, 5000)*/
 
 
+
+/*function RotateArrow(){
+    //let rot = Math.atan2(Math.cos(lat1) * Math.sin(lat2)-Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2-lon1), Math.sin(lon2-lon1) * Math.cos(lat2))
+    //var y = Math.sin(dLon) * Math.cos(lat2);
+    //var x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
+    //var brng = Math.atan2(y, x).toDeg();
+
+    //var bearings = ["NE", "E", "SE", "S", "SW", "W", "NW", "N"];
+
+    //var index = brng - 22.5;
+    //if (index < 0)
+    //    index += 360;
+    //index = parseInt(index / 45);
+    
+    //return(bearings[index]);
+    let usercoord = GetLatAndLng(userPoint);
+
+    let destcoord = GetLatAndLng(Destination);
+
+
+    //console.log(userx, usery, "---", destx, desty);
+
+    console.log(usercoord, destcoord)
+    
+    var angleDeg = Math.atan2(destcoord[1] - usercoord[1], destcoord[0] - usercoord[0]) * 180 / Math.PI;
+    console.log(angleDeg)
+}*/
 
 
 /*function getDistanceFromLatLonInKm() {
