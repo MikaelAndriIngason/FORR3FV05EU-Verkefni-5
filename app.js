@@ -52,6 +52,8 @@ searchControl.on('results', function(data){
         Destination = L.marker(data.results[i].latlng, {icon: greenIcon});
         results.addLayer(Destination);
 
+        map.fitBounds(L.latLngBounds([userPoint, Destination].map(marker => marker.getLatLng())))
+
         //Býr til línu á milli
         CreateLine();
     }
@@ -81,12 +83,6 @@ function GetLatAndLng(position){
 
     return latAndLng;
 }
-//Error ef notandinn finnst ekki
-function UserNotFound(e) { alert(e.message); }
-
-//Þegar kortið kveikist þá leitar það af notandanum
-//map.on('locationfound', UserLocation);
-//map.on('locationerror', UserNotFound);
 
 //Finnur notandan og uppfærir staðsetningu hans
 map.locate({
@@ -126,7 +122,7 @@ function CreateLine(){
     polyline = L.polyline([userPoint.getLatLng(), Destination.getLatLng()], {color: 'red'}).addTo(map);
 
     //hreyfir sjónina þína svo því getur séð báða punktana á kortinu
-    map.fitBounds(L.latLngBounds([userPoint, Destination].map(marker => marker.getLatLng())))
+    //map.fitBounds(L.latLngBounds([userPoint, Destination].map(marker => marker.getLatLng())))
 
     //Reiknar lengdina á milli punktana
     distanceBetween();
@@ -154,20 +150,10 @@ function distanceBetween(){
 }
 
 
-// !!! !!! !!!
-// 
-/*function updateUserPos(){
-    var lat = (e.latlng.lat);
-    var lng = (e.latlng.lng);
-    var newLatLng = new L.LatLng(lat, lng);
-    userPoint.setLatLng(newLatLng); 
-    console.log("bruh")
-    distancebetween();
-}
-
-setInterval(updateUserPos, 5000)*/
 
 
+
+//Gamall kóði fyrir örina sem átti að snúast
 
 /*function RotateArrow(){
     //let rot = Math.atan2(Math.cos(lat1) * Math.sin(lat2)-Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2-lon1), Math.sin(lon2-lon1) * Math.cos(lat2))
@@ -186,13 +172,7 @@ setInterval(updateUserPos, 5000)*/
     let usercoord = GetLatAndLng(userPoint);
 
     let destcoord = GetLatAndLng(Destination);
-
-
-    //console.log(userx, usery, "---", destx, desty);
-
-    console.log(usercoord, destcoord)
     
     var angleDeg = Math.atan2(destcoord[1] - usercoord[1], destcoord[0] - usercoord[0]) * 180 / Math.PI;
-    console.log(angleDeg)
 }*/
 
