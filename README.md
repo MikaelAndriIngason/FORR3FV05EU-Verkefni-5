@@ -26,6 +26,7 @@ Mögulega mun ég bæta við skrefamæli og texta sem sýnir lengdina á milli.
 ***
 
 ### Myndband af notkun
+https://photos.app.goo.gl/eLhTbA5zkHzrLgDd8
 
 ***
 
