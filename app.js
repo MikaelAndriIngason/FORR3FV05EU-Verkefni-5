@@ -52,8 +52,6 @@ searchControl.on('results', function(data){
         Destination = L.marker(data.results[i].latlng, {icon: greenIcon});
         results.addLayer(Destination);
 
-        map.fitBounds(L.latLngBounds([userPoint, Destination].map(marker => marker.getLatLng())))
-
         //Býr til línu á milli
         CreateLine();
     }
