@@ -5,9 +5,6 @@ var Destination;
 //Lína á milli punktana
 var polyline;
 
-
-var showdist = false;
-
 var distancetext = document.getElementById("distext");
 
 
@@ -68,6 +65,8 @@ map.locate({
             userPoint = new L.marker(e.latlng).addTo(this.map);
       } else {
             userPoint.setLatLng(e.latlng);
+            if(!Destination)
+                distanceBetween();
       }
   }).on("locationerror", error => {
       if (userPoint) {
@@ -86,8 +85,7 @@ function CreateLine(){
     //hreyfir sjónina þína svo því getur séð báða punktana á kortinu
     map.fitBounds(L.latLngBounds([userPoint, Destination].map(marker => marker.getLatLng())))
     //RotateArrow();
-    showdist = true;
-    distanceBetween();
+    //distanceBetween();
 }
 
 //Finnur lengdina á milli staðsetningana
