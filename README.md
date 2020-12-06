@@ -34,6 +34,9 @@ Mögulega mun ég bæta við skrefamæli og texta sem sýnir lengdina á milli.
 ***
 
 ### Útkoman
+Verkefnið gekk ekki eins vel og ég vildi, átti samt von á því að það myndi enda þannig. Það er ekki nógu gott documentation um áttavita með Javascript, mest af því tengist bara hvernig síminn snýr og það gefur ekki réttar áttir. Það er til library sem kallast Compass.js, en það virkaði ekki heldur.  
+Fann síðan út að símar nota magnetometer sensor til að finna út áttir, en það var líka lítið documentation með það.
+
 
 ***
 
