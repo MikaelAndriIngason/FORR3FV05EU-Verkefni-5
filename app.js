@@ -146,31 +146,3 @@ function distanceBetween(){
     //Námundar í næsta INT og setur kommu ef það fer yfir 1000, síðan er þetta sent á HTML-ið
     distancetext.innerHTML = Math.round(d).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-
-
-
-
-
-//Gamall kóði fyrir örina sem átti að snúast
-
-/*function RotateArrow(){
-    //let rot = Math.atan2(Math.cos(lat1) * Math.sin(lat2)-Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2-lon1), Math.sin(lon2-lon1) * Math.cos(lat2))
-    //var y = Math.sin(dLon) * Math.cos(lat2);
-    //var x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
-    //var brng = Math.atan2(y, x).toDeg();
-
-    //var bearings = ["NE", "E", "SE", "S", "SW", "W", "NW", "N"];
-
-    //var index = brng - 22.5;
-    //if (index < 0)
-    //    index += 360;
-    //index = parseInt(index / 45);
-    
-    //return(bearings[index]);
-    let usercoord = GetLatAndLng(userPoint);
-
-    let destcoord = GetLatAndLng(Destination);
-    
-    var angleDeg = Math.atan2(destcoord[1] - usercoord[1], destcoord[0] - usercoord[0]) * 180 / Math.PI;
-}*/
-
