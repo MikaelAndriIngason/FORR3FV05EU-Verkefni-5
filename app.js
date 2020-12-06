@@ -5,15 +5,20 @@ var Destination;
 //Lína á milli punktana
 var polyline;
 
+//Textinn á HTML sem sýnir lengdina
 var distancetext = document.getElementById("distext");
 
 
+//-----------------------------------------
 
+
+//Default punktur er blár svo ég bý til grænan til að sýna hvar lokapunkturinn er
 var greenIcon = new L.Icon({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]});
 
+//Stillir kortið fyrir mobile
 var map = L.map('mapid', { zoomControl: false, attributionControl: false }).fitWorld();
-//map.locate({setView: true, maxZoom: 16});
 
+//Nær í og býr til kort
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' + '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',    
     id: 'mapbox/streets-v11',
@@ -22,26 +27,37 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     zoomOffset: -1
 }).addTo(map);
 
+//Bætir við search bar svo notandinn getur sláð inn staðsetningu
 var searchControl = new L.esri.Controls.Geosearch().addTo(map);
 var results = new L.LayerGroup().addTo(map);
 
+//Setur punkt fyrir lokapunktinn og býr til línu á milli
 searchControl.on('results', function(data){
+    //Hreinsar gamla lokapunkta
     results.clearLayers();
+
     for (var i = data.results.length - 1; i >= 0; i--) {
+        //Setur inn grænan endapunkt
         Destination = L.marker(data.results[i].latlng, {icon: greenIcon});
         results.addLayer(Destination);
+
+        //Býr til línu á milli
         CreateLine();
     }
 });
 
+//Ef notandinn finnst þá er settur blár punktur
 function UserLocation(e) {
     var radius = e.accuracy;
 
     //Býr til marker þar sem notandinn er staðsettur
     userPoint = L.marker(e.latlng).addTo(map);
-    //L.circle(e.latlng, radius).addTo(map);
+    L.circle(e.latlng, radius -15).addTo(map);
+
+    distanceBetween();
 }
 
+//Nær í lat og lng (staðsetningu) af marker og skilar því sem array
 function GetLatAndLng(position){
     let latAndLng = position.getLatLng().toString().match(/[^(]+(?=\))/g) + "";
     latAndLng = latAndLng.split(',').map(x=>+x);
@@ -52,50 +68,58 @@ function GetLatAndLng(position){
 //Error ef notandinn finnst ekki
 function UserNotFound(e) { alert(e.message); }
 
-map.on('locationfound', UserLocation);
-map.on('locationerror', UserNotFound);
+//Þegar kortið kveikist þá leitar það af notandanum
+//map.on('locationfound', UserLocation);
+//map.on('locationerror', UserNotFound);
 
-//map.locate({setView: true, watch: true});
-
+//Finnur notandan og uppfærir staðsetningu hans
 map.locate({
     setView: true,
+    watch: true,
+    enableHighAccuracy: true,
     maxZoom: 1200
-  }).on("locationfound", e => {
-      if (!userPoint) {
+    //Ef notandinn finnst
+    }).on("locationfound", e => {
+        if (!userPoint) {
             userPoint = new L.marker(e.latlng).addTo(this.map);
-      } else {
+        } else {
             userPoint.setLatLng(e.latlng);
-            if(!Destination)
-                distanceBetween();
-      }
-  }).on("locationerror", error => {
-      if (userPoint) {
-          map.removeLayer(userPoint);
-          userPoint = undefined;
-      }
-  });
+            distanceBetween();
+            //if(!Destination)
+                //distanceBetween();
+        }
+    }).on("locationerror", error => {
+        if (userPoint) {
+            map.removeLayer(userPoint);
+            userPoint = undefined;
+        }
+});
 
 
 document.getElementsByClassName('geocoder-control-input leaflet-bar')[0].placeholder = "Leita af staðsetningu";
 
+
+//Býr til línu á milli notandans og lokapunkts
 function CreateLine(){
+    //Ef það er lína þá er hún eydd annars er bætt við
     if(polyline) map.removeLayer(polyline)
     polyline = L.polyline([userPoint.getLatLng(), Destination.getLatLng()], {color: 'red'}).addTo(map);
 
     //hreyfir sjónina þína svo því getur séð báða punktana á kortinu
     map.fitBounds(L.latLngBounds([userPoint, Destination].map(marker => marker.getLatLng())))
-    //RotateArrow();
-    //distanceBetween();
+
+    //Reiknar lengdina á milli punktana
+    distanceBetween();
 }
 
-//Finnur lengdina á milli staðsetningana
+//Finnur lengdina á milli staðsetningana (þessi formúla fannst á netinu, hún er ekki 100% nákvæm)
 function distanceBetween(){
+    //Nær í staðsetningar notandans og endapunkts
     let usercoord = GetLatAndLng(userPoint);
-
     let destcoord = GetLatAndLng(Destination);
 
-    let R = 6371e3; // metres
-    let φ1 = usercoord[0] * Math.PI/180; // φ, λ in radians
+    let R = 6371e3; //Metrar
+    let φ1 = usercoord[0] * Math.PI/180;
     let φ2 = destcoord[0] * Math.PI/180;
     let Δφ = (destcoord[0]-usercoord[0]) * Math.PI/180;
     let Δλ = (destcoord[1]-usercoord[1]) * Math.PI/180;
@@ -109,13 +133,7 @@ function distanceBetween(){
     distancetext.innerHTML = Math.round(d).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-//
-// !!! !!! !!!
-//
-// !!! !!! !!! 
-//
-// !!! !!! !!!
-//
+
 // !!! !!! !!!
 // 
 /*function updateUserPos(){
@@ -157,51 +175,4 @@ setInterval(updateUserPos, 5000)*/
     var angleDeg = Math.atan2(destcoord[1] - usercoord[1], destcoord[0] - usercoord[0]) * 180 / Math.PI;
     console.log(angleDeg)
 }*/
-
-
-/*function getDistanceFromLatLonInKm() {
-
-    let usercoord = GetLatAndLng(userPoint);
-
-    let destcoord = GetLatAndLng(Destination);
-
-    console.log(usercoord, destcoord)
-
-
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(destcoord[0]-usercoord[0]);  // deg2rad below
-    var dLon = deg2rad(destcoord[1]-usercoord[1]); 
-    var a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(deg2rad(usercoord[0])) * Math.cos(deg2rad(destcoord[0])) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2)
-      ; 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var d = R * c; // Distance in km
-    console.log(d)
-  }
-  
-  function deg2rad(deg) {
-    return deg * (Math.PI/180)
-  }*/
-
-
-
-
-
-
-
-/*var popup = L.popup();
-
-function onMapClick(e) {
-    console.log(e.latlng)
-    L.marker([51.5, -0.09]).addTo(map).bindPopup("<b>Endapunktur</b>").openPopup();
-
-	popup
-		.setLatLng(e.latlng)
-		.setContent("You clicked the map at " + e.latlng.toString())
-		.openOn(mymap);
-}
-
-map.on('click', onMapClick);*/
 
