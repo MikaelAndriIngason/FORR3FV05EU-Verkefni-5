@@ -30,7 +30,10 @@ Mögulega mun ég bæta við skrefamæli og texta sem sýnir lengdina á milli.
 ***
 
 ### Greinagerð um frumgerð
+Í þessu verkefni notaði ég [LeafletJS](https://leafletjs.com/) fyrir kortið, það er ágætlega létt að nota og virkar vel, sum leiðinleg atriði við það en að mestu leiti gerði það sína vinnu. Leaflet kemur ekki með search bar en það er til plugin fyrir það sem kallast [Leaflet.Control.Search](https://leaflet-search.readthedocs.io/en/latest/) og það gerði notundum kleift að leita af staðsetningum.
 
+Kóðinn sem reiknar fjarlægð á milli punkta er ekki 100% nákvæm, en það skiptir ekki mestu máli ef staðsetninganar eru ekki of langt frá (það reikar ekki með sveigju jarðarinar)  
+Leaflet er með distanceTo() function en ég náði ekki að láta það virka.
 ***
 
 ### Útkoman
